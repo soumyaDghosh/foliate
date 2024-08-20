@@ -2,13 +2,13 @@ name: foliate
 grade: stable
 adopt-info: foliate
 license: GPL-3.0+
-base: core22
+base: core24
 confinement: strict
 compression: lzo
-architectures:
-  - build-on: amd64
-  - build-on: arm64
-  - build-on: armhf
+platforms:
+  amd64:
+  arm64:
+  armhf:
 layout:
   /usr/lib/$CRAFT_ARCH_TRIPLET/webkitgtk-6.0:
     bind: $SNAP/webkitgtk-platform/usr/lib/$CRAFT_ARCH_TRIPLET/webkitgtk-6.0
@@ -18,10 +18,10 @@ slots:
     bus: session
     name: com.github.johnfactotum.Foliate
 plugs:
-  webkitgtk-6-gnome-2204:
+  webkitgtk-6-gnome-2404:
     interface: content
     target: $SNAP/webkitgtk-platform
-    default-provider: webkitgtk-6-gnome-2204
+    default-provider: webkitgtk-6-gnome-2404
 apps:
   foliate:
     command: usr/bin/foliate
@@ -45,17 +45,16 @@ parts:
     plugin: meson
     source: https://github.com/johnfactotum/foliate.git
     source-tag: '3.1.1'
+    source-depth: 1
     build-environment:
-      - PKG_CONFIG_PATH: /snap/webkitgtk-6-gnome-2204-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET/pkgconfig:$PKG_CONFIG_PATH
+      - PKG_CONFIG_PATH: /snap/webkitgtk-6-gnome-2404-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET/pkgconfig:$PKG_CONFIG_PATH
     meson-parameters:
       - --prefix=/snap/foliate/current/usr
     override-pull: |
       craftctl default
       sed -i '1c#!/snap/foliate/current/gnome-platform/usr/bin/gjs -m' src/main.js
-    build-packages:
-      - xmlstarlet
     build-snaps:
-      - webkitgtk-6-gnome-2204-sdk/latest/stable
+      - webkitgtk-6-gnome-2404-sdk/latest/stable
     parse-info:
       - usr/share/metainfo/com.github.johnfactotum.Foliate.metainfo.xml
     organize:
